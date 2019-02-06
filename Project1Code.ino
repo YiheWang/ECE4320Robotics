@@ -1,4 +1,5 @@
-#include <Servo.h> 
+#include <Servo.h>
+#include "SCoop.h"
 
 int IN3 = 8;
 int IN4 = 7;
@@ -68,37 +69,40 @@ void servoControlClose()
   myservo.write(90);//close the vent
 }
 
-void fanControl(int temperature)
+void fanControl(float temperature)
 {
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, LOW); 
   //set IN3 and IN4 to HIGH and LOW for one direction 
-  if(temperature >= 25 && temperature < 37){
-    Serial.print("LED on!");
+  
+  if(temperature >= 27 && temperature < 37){
+    Serial.print("LED on!\n");
     digitalWrite(LED,HIGH);
-    if(temperature <27){
+    Serial.print("temperature = ");
+    Serial.println(temperature);
+    /*if(temperature <27){
       analogWrite(motor2_enable,80); // speed should be in range 0-255
-    }
-    else if(temperature < 29 && temperature >=27){
-      analogWrite(motor2_enable,100);
+    }*/
+    if(temperature < 29 && temperature >=27){
+      analogWrite(motor2_enable,30);
     }
     else if(temperature < 31 && temperature >= 29){
-      analogWrite(motor2_enable,120);
+      analogWrite(motor2_enable,70);
     }
     else if(temperature < 33 && temperature >= 31){
-      analogWrite(motor2_enable,140);
+      analogWrite(motor2_enable,110);
     }
     else if(temperature <35 && temperature >=33){
-      analogWrite(motor2_enable,160);
+      analogWrite(motor2_enable,150);
     }
     else if(temperature <37 && temperature >=35){
-      analogWrite(motor2_enable,180);
+      analogWrite(motor2_enable,190);
     } 
     // different temperature range correspond to different fan speed
   }
 
   else{
-    Serial.print("LED off!");
+    Serial.print("LED off!\n");
     digitalWrite(LED,LOW);
     analogWrite(motor2_enable,0); // turn off the fan
   }
